@@ -249,7 +249,10 @@ document.addEventListener('DOMContentLoaded', function(){
     const plotW = rw - pad.left - pad.right;
     const plotH = rh - pad.top - pad.bottom;
 
-    const validRows = rows.filter(r => r.label);
+    // ラベルが空でも、数値が入っている行はグラフに反映する（ラベル空欄の行は行番号を軸ラベルに使う）
+    const hasValue = r => seriesList.some(s => !isNaN(parseFloat(r.values[s.id])));
+    const validRows = rows.filter(r => r.label || hasValue(r));
+    const labelOf = r => r.label || String(rows.indexOf(r) + 1);
     const series = seriesList.map((s) => {
       const values = validRows.map(r => {
         const v = parseFloat(r.values[s.id]);
@@ -349,7 +352,7 @@ document.addEventListener('DOMContentLoaded', function(){
       const step = Math.max(1, Math.ceil(n / maxLabels));
       validRows.forEach((r,i) => {
         if(i % step !== 0 && i !== n-1) return;
-        ctx.fillText(r.label, xFor(i), pad.top+plotH+10);
+        ctx.fillText(labelOf(r), xFor(i), pad.top+plotH+10);
       });
     }
 

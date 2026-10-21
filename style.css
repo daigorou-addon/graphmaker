@@ -118,7 +118,33 @@ main{flex:1; display:flex; gap:16px; padding:16px 20px; min-height:0; align-item
 footer{text-align:center; color:var(--muted); font-size:11px; padding:14px; border-top:1px solid var(--line); background:var(--panel);}
 .footer-copyright{margin-top:6px; opacity:.7; font-size:10px;}
 
+/* ===== レスポンシブ（タブレット・スマホ） ===== */
+.brand{flex-wrap:wrap;}
+.brand-name{white-space:nowrap;}
+button, .primary, .ghost{white-space:nowrap;}
+
 @media (max-width: 980px){
-  main{flex-direction:column;}
-  .col-input{width:100%;}
+  /* 画面全体の高さ固定をやめ、縦に並べてページ全体をスクロールさせる（フッターが内容に重ならないように） */
+  html, body{height:auto;}
+  main{flex-direction:column; flex:none; min-height:auto;}
+  .panel{overflow:visible; min-height:auto;}
+  .col-input{width:100%; overflow:visible;}
+  .col-preview{order:-1; flex:none;}
+  .chart-frame{flex:none; padding:12px;}
+  #chartCanvas{width:100%; height:auto;}
+  .table-scroll{max-height:60vh;}
+}
+
+@media (max-width: 700px){
+  .topbar{padding:10px 12px;}
+  main{padding:10px; gap:10px;}
+  .panel{padding:14px;}
+  /* iOSで入力欄タップ時に画面が勝手に拡大されないよう16px以上にする */
+  .text-input, .cell-input, select{font-size:16px;}
+  .ghost.small, .series-del{padding:9px 12px;}
+  .row-del{padding:9px 0;}
+  /* 編集しながらグラフを見られるよう、画面上部に固定表示 */
+  .col-preview{position:sticky; top:0; z-index:20; padding:8px 10px;}
+  .col-preview .panel-title{margin-bottom:6px; font-size:13px;}
+  .chart-frame{padding:6px;}
 }
